@@ -287,6 +287,17 @@
    4. graphql
    5. react-apollo-hooks
 
+## 앱 구성
+1. dependency
+   1. @expo/vector-icons
+   2. expo install
+      1. expo-font
+      2. expo-asset
+
+## 앱 개발 시 유용한 정보
+1. preload
+   - 앱에서 필요한 리소스들을 미리 loading 해온 뒤 앱을 시작하는 방법
+
 ## 유용한 패키지들 or 사이트들
 
 1. send mail
