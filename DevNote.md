@@ -293,10 +293,19 @@
    2. expo install
       1. expo-font
       2. expo-asset
+      - preload Assets 관련
+   3. apollo-cache-persist
+   4. apollo-cache-inmemory
+      - preload Cache 관련
+      - https://github.com/apollographql/apollo-cache-persist
 
 ## 앱 개발 시 유용한 정보
-1. preload
-   - 앱에서 필요한 리소스들을 미리 loading 해온 뒤 앱을 시작하는 방법
+1. preload Assets
+   - 앱에서 필요한 Assets을 미리 loading 해온 뒤 앱을 시작하는 방법
+2. preload Cache
+   - 새로운 데이터를 가져와 보여주기 전에 이전에 있던 cache 데이터를 먼저 보여주고 새로운 데이터가 load되면 보여주는 방법
+   - apollo.js 파일에 apolloClientOptions을 가져와 client 구성
+   - ApolloProvider
 
 ## 유용한 패키지들 or 사이트들
 
