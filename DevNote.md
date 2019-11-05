@@ -279,6 +279,13 @@
 2. expo init [project_name]
    - blank 생성 후 app 이름 설정
 3. README.md 생성
+4. git commit & create git repository
+5. dependency
+   1. styled-components
+   2. react-navigation
+   3. apollo-boost
+   4. graphql
+   5. react-apollo-hooks
 
 ## 유용한 패키지들 or 사이트들
 
