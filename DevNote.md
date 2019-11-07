@@ -275,6 +275,7 @@
 4. Hook Query
 
 ## 앱 프로젝트 생성
+
 1. yarn global add expo-cli
 2. expo init [project_name]
    - blank 생성 후 app 이름 설정
@@ -288,6 +289,7 @@
    5. react-apollo-hooks
 
 ## 앱 구성
+
 1. dependency
    1. @expo/vector-icons
    2. expo install
@@ -300,6 +302,7 @@
       - https://github.com/apollographql/apollo-cache-persist
 
 ## 앱 개발 시 유용한 정보
+
 1. preload Assets
    - 앱에서 필요한 Assets을 미리 loading 해온 뒤 앱을 시작하는 방법
 2. preload Cache
