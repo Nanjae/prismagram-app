@@ -309,6 +309,8 @@
    - 새로운 데이터를 가져와 보여주기 전에 이전에 있던 cache 데이터를 먼저 보여주고 새로운 데이터가 load되면 보여주는 방법
    - apollo.js 파일에 apolloClientOptions을 가져와 client 구성
    - ApolloProvider
+3. react-navigation-stack
+   - react-navigation 4.x 부터 stackNavagition이 일로 빠져나옴
 
 ## 유용한 패키지들 or 사이트들
 
