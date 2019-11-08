@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import constants from "../../constants";
+import AuthButton from "../../components/AuthButton";
 
 const View = styled.View`
   flex: 1;
@@ -17,20 +18,9 @@ const Image = styled.Image`
 
 const Touchable = styled.TouchableOpacity``;
 
-const SignUpBtn = styled.View`
-  background-color: ${props => props.theme.blueColor};
-  padding: 10px 0px;
-  width: ${constants.width / 1.2};
-  border-radius: 4px;
-  margin-bottom: 20px;
+const LoginLink = styled.View`
+  margin-top: 20px;
 `;
-const SignUpBtnText = styled.Text`
-  color: white;
-  font-weight: 600;
-  text-align: center;
-`;
-
-const LoginLink = styled.View``;
 const LoginLinkText = styled.Text`
   color: ${props => props.theme.blueColor};
   font-weight: 600;
@@ -39,11 +29,10 @@ const LoginLinkText = styled.Text`
 export default ({ navigation }) => (
   <View>
     <Image resizeMode={"contain"} source={require("../../assets/logo.png")} />
-    <Touchable onPress={() => navigation.navigate("SignUp")}>
-      <SignUpBtn>
-        <SignUpBtnText>새 계정 만들기</SignUpBtnText>
-      </SignUpBtn>
-    </Touchable>
+    <AuthButton
+      text={"새 계정 만들기"}
+      onPress={() => navigation.navigate("SignUp")}
+    />
     <Touchable onPress={() => navigation.navigate("Login")}>
       <LoginLink>
         <LoginLinkText>로그인</LoginLinkText>
