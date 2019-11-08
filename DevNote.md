@@ -311,6 +311,9 @@
    - ApolloProvider
 3. react-navigation-stack
    - react-navigation 4.x 부터 stackNavagition이 일로 빠져나옴
+4. ngrok
+   - network request failed 뜨면 localhost 대신 요기서 주소 만들어서 apollo.js option uri를 변경하도록 하자
+   - https://dashboard.ngrok.com/get-started
 
 ## 유용한 패키지들 or 사이트들
 

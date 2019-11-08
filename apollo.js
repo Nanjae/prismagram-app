@@ -1,3 +1,3 @@
-const apolloClientOptions = { uri: "http://localhost:4000/" };
+const options = { uri: "http://7fa44e74.ngrok.io" };
 
-export default apolloClientOptions;
+export default options;
