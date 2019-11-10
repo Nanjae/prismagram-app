@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
@@ -25,17 +25,21 @@ const LoginLinkText = styled.Text`
   font-weight: 600;
 `;
 
-export default ({ navigation }) => (
-  <View>
-    <Image resizeMode={"contain"} source={require("../../assets/logo.png")} />
-    <AuthButton
-      text={"새 계정 만들기"}
-      onPress={() => navigation.navigate("SignUp")}
-    />
-    <Touchable onPress={() => navigation.navigate("Login")}>
-      <LoginLink>
-        <LoginLinkText>로그인</LoginLinkText>
-      </LoginLink>
-    </Touchable>
-  </View>
-);
+export default ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
+  return (
+    <View>
+      <Image resizeMode={"contain"} source={require("../../assets/logo.png")} />
+      <AuthButton
+        text={"새 계정 만들기"}
+        onPress={() => navigation.navigate("SignUp")}
+        loading={loading}
+      />
+      <Touchable onPress={() => navigation.navigate("Login")}>
+        <LoginLink>
+          <LoginLinkText>로그인</LoginLinkText>
+        </LoginLink>
+      </Touchable>
+    </View>
+  );
+};

@@ -7,6 +7,7 @@ import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
+import * as Facebook from "expo-facebook";
 
 const View = styled.View`
   flex: 1;
@@ -18,6 +19,14 @@ const Image = styled.Image`
   width: ${constants.width / 2.5};
   height: ${constants.width / 5};
   margin-bottom: 20px;
+`;
+
+const FBContainer = styled.View`
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top-width: 1px;
+  border-style: solid;
+  border-color: ${props => props.theme.lightGreyColor};
 `;
 
 export default ({ navigation }) => {
@@ -75,6 +84,34 @@ export default ({ navigation }) => {
       setLoading(false);
     }
   };
+  const fbLogin = async () => {
+    try {
+      setLoading(true);
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+        "574895476590324",
+        {
+          permissions: ["public_profile", "email"]
+        }
+      );
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
+        );
+        const { email, first_name, last_name } = await response.json();
+        emailInput.setValue(email);
+        firstNameInput.setValue(first_name);
+        lastNameInput.setValue(last_name);
+        const [username] = email.split("@");
+        usernameInput.setValue(username);
+        setLoading(false);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
@@ -108,6 +145,14 @@ export default ({ navigation }) => {
           {...usernameInput}
         />
         <AuthButton text="가입" onPress={handleSignUp} loading={loading} />
+        <FBContainer>
+          <AuthButton
+            text="페이스북 연동"
+            onPress={fbLogin}
+            loading={loading}
+            bgColor="#2D4DA6"
+          />
+        </FBContainer>
       </View>
     </TouchableWithoutFeedback>
   );

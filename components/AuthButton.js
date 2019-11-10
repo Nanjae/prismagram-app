@@ -6,7 +6,8 @@ import PropTypes from "prop-types";
 
 const Touchable = styled.TouchableOpacity``;
 const Container = styled.View`
-  background-color: ${props => props.theme.blueColor};
+  background-color: ${props =>
+    props.bgColor ? props.bgColor : props.theme.blueColor};
   padding: 10px 0px;
   width: ${constants.width / 1.2};
   border-radius: 4px;
@@ -17,9 +18,9 @@ const Text = styled.Text`
   text-align: center;
 `;
 
-const AuthButton = ({ text, onPress, loading = true }) => (
+const AuthButton = ({ text, onPress, loading = true, bgColor = null }) => (
   <Touchable disabled={loading} onPress={onPress}>
-    <Container>
+    <Container bgColor={bgColor}>
       {loading ? <ActivityIndicator color="white" /> : <Text>{text}</Text>}
     </Container>
   </Touchable>
