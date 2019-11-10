@@ -8,6 +8,7 @@ import useInput from "../../hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 
 const View = styled.View`
   flex: 1;
@@ -21,12 +22,16 @@ const Image = styled.Image`
   margin-bottom: 20px;
 `;
 
-const FBContainer = styled.View`
-  margin-top: 25px;
-  padding-top: 25px;
+const ConnectContainer = styled.View`
+  margin-top: 15px;
+  padding-top: 5px;
   border-top-width: 1px;
   border-style: solid;
   border-color: ${props => props.theme.lightGreyColor};
+`;
+
+const ConnectBtn = styled.View`
+  margin-top: 10px;
 `;
 
 export default ({ navigation }) => {
@@ -85,10 +90,11 @@ export default ({ navigation }) => {
     }
   };
   const fbLogin = async () => {
+    const FACEBOOK_APP_ID = "574895476590324";
     try {
       setLoading(true);
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-        "574895476590324",
+        FACEBOOK_APP_ID,
         {
           permissions: ["public_profile", "email"]
         }
@@ -99,18 +105,49 @@ export default ({ navigation }) => {
           `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
         );
         const { email, first_name, last_name } = await response.json();
-        emailInput.setValue(email);
-        firstNameInput.setValue(first_name);
-        lastNameInput.setValue(last_name);
-        const [username] = email.split("@");
-        usernameInput.setValue(username);
-        setLoading(false);
+        updateFormData(email, first_name, last_name);
       } else {
         // type === 'cancel'
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
+    } finally {
+      setLoading(false);
     }
+  };
+  const googleLogin = async () => {
+    const GOOGLE_ANDROID_ID =
+      "393748620105-qqjqbnbfg17kd6ro4r9igdk6lbldchi3.apps.googleusercontent.com";
+    const GOOGLE_IOS_ID =
+      "393748620105-f1kfbdfg67hugupi5mbnh9omev03s9oo.apps.googleusercontent.com";
+    try {
+      setLoading(true);
+      const result = await Google.logInAsync({
+        androidClientId: GOOGLE_ANDROID_ID,
+        iosClientId: GOOGLE_IOS_ID,
+        scopes: ["profile", "email"]
+      });
+      if (result.type === "success") {
+        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${result.accessToken}` }
+        });
+        const { email, family_name, given_name } = await user.json();
+        updateFormData(email, family_name, given_name);
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const updateFormData = (email, firstName, lastName) => {
+    emailInput.setValue(email);
+    firstNameInput.setValue(firstName);
+    lastNameInput.setValue(lastName);
+    const [username] = email.split("@");
+    usernameInput.setValue(username);
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -145,14 +182,24 @@ export default ({ navigation }) => {
           {...usernameInput}
         />
         <AuthButton text="가입" onPress={handleSignUp} loading={loading} />
-        <FBContainer>
-          <AuthButton
-            text="페이스북 연동"
-            onPress={fbLogin}
-            loading={loading}
-            bgColor="#2D4DA6"
-          />
-        </FBContainer>
+        <ConnectContainer>
+          <ConnectBtn>
+            <AuthButton
+              text="페이스북 연동"
+              onPress={fbLogin}
+              loading={loading}
+              bgColor="#2D4DA6"
+            />
+          </ConnectBtn>
+          <ConnectBtn>
+            <AuthButton
+              text="구글 연동"
+              onPress={googleLogin}
+              loading={loading}
+              bgColor="#EE1922"
+            />
+          </ConnectBtn>
+        </ConnectContainer>
       </View>
     </TouchableWithoutFeedback>
   );
