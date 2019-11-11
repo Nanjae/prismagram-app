@@ -1,3 +1,3 @@
-const options = { uri: "http://5be1e245.ngrok.io" };
+const options = { uri: "http://50d0802e.ngrok.io" };
 
 export default options;
