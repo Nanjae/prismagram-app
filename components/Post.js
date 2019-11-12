@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Platform } from "react-native";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { gql } from "apollo-boost";
 import Swiper from "react-native-swiper";
 import constants from "../constants";
 import { Ionicons } from "@expo/vector-icons";
+import styles from "../styles";
+import { useMutation } from "react-apollo-hooks";
+
+const TOGGLE_LIKE = gql`
+  mutation toggleLike($postId: String!) {
+    toggleLike(postId: $postId)
+  }
+`;
 
 const Container = styled.View``;
 const Header = styled.View`
@@ -26,12 +35,13 @@ const Location = styled.Text`
 
 const IconsContainer = styled.View`
   padding: 10px;
+  padding-left: 5px;
   padding-bottom: 0px;
   flex-direction: row;
 `;
 
 const IconContainer = styled.View`
-  margin-right: 10px;
+  padding: 0px 5px;
 `;
 
 const InfoContainer = styled.View`
@@ -52,7 +62,34 @@ const CommentCount = styled.Text`
   font-size: 12px;
 `;
 
-const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
+const Post = ({
+  id,
+  user,
+  location,
+  files = [],
+  likeCount: likeCountProp,
+  caption,
+  comments,
+  isLiked: isLikedProp
+}) => {
+  const [isLiked, setIsLiked] = useState(isLikedProp);
+  const [likeCount, setLikeCount] = useState(likeCountProp);
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id }
+  });
+  const handleLike = async () => {
+    if (isLiked) {
+      setLikeCount(p => p - 1);
+    } else {
+      setLikeCount(p => p + 1);
+    }
+    setIsLiked(p => !p);
+    try {
+      await toggleLikeMutation();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Container>
       <Header>
@@ -72,6 +109,7 @@ const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
         </HeaderUserContainer>
       </Header>
       <Swiper
+        autoplay={true}
         height={constants.height / 2.5}
         width={constants.width}
         dotStyle={{ marginBottom: -80, width: 6, height: 6 }}
@@ -86,12 +124,19 @@ const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
         ))}
       </Swiper>
       <IconsContainer>
-        <Touchable>
+        <Touchable onPress={handleLike}>
           <IconContainer>
             <Ionicons
               size={28}
+              color={isLiked ? styles.redColor : styles.blackColor}
               name={
-                Platform.OS === "ios" ? "ios-heart-empty" : "md-heart-empty"
+                Platform.OS === "ios"
+                  ? isLiked
+                    ? "ios-heart"
+                    : "ios-heart-empty"
+                  : isLiked
+                  ? "md-heart"
+                  : "md-heart-empty"
               }
             />
           </IconContainer>
@@ -106,7 +151,7 @@ const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
         </Touchable>
       </IconsContainer>
       <InfoContainer>
-        {likeCount === 0 ? null : (
+        {likeCountProp === 0 ? null : (
           <Touchable>
             <Bold>좋아요 {likeCount}개</Bold>
           </Touchable>
