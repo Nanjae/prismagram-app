@@ -10,6 +10,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import styled from "styled-components";
+import { stackStyles } from "../components/config";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
@@ -17,7 +18,7 @@ const stackFactory = (initialRoute, customConfig) =>
       screen: initialRoute,
       navigationOptions: {
         ...customConfig,
-        headerStyle: { backgroundColor: "#FAFAFA" }
+        headerStyle: { ...stackStyles }
       }
     }
   });
