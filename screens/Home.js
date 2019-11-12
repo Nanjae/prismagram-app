@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { ScrollView, RefreshControl } from "react-native";
 import { gql } from "apollo-boost";
 import styled from "styled-components";
 import Loader from "../components/Loader";
@@ -44,7 +45,26 @@ const View = styled.View`
 const Text = styled.Text``;
 
 export default () => {
-  const { loading, data } = useQuery(FEED_QUERY);
+  const [refreshing, setRefreshing] = useState(false);
+  const { loading, data, refetch } = useQuery(FEED_QUERY);
+  const refresh = async () => {
+    try {
+      setRefreshing(true);
+      await refetch();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setRefreshing(false);
+    }
+  };
   console.log(data);
-  return <View>{loading ? <Loader /> : <Text>Home</Text>}</View>;
+  return (
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+      }
+    >
+      {loading ? <Loader /> : <Text>Home</Text>}
+    </ScrollView>
+  );
 };
