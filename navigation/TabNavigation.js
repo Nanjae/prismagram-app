@@ -12,18 +12,32 @@ import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import styled from "styled-components";
 import { stackStyles } from "../components/config";
+import styles from "../styles";
 
 const stackFactory = (initialRoute, customConfig) =>
-  createStackNavigator({
-    InitialRoute: {
-      screen: initialRoute,
-      navigationOptions: {
-        ...customConfig,
-        headerStyle: { ...stackStyles }
+  createStackNavigator(
+    {
+      InitialRoute: {
+        screen: initialRoute,
+        navigationOptions: {
+          ...customConfig
+        }
+      },
+      Detail: {
+        screen: Detail,
+        navigationOptions: {
+          headerTintColor: styles.blackColor,
+          title: "Post",
+          headerTitleStyle: { marginLeft: 0 }
+        }
       }
     },
-    Detail
-  });
+    {
+      defaultNavigationOptions: {
+        headerStyle: { ...stackStyles }
+      }
+    }
+  );
 
 const Container = styled.View`
   margin-left: 15px;
@@ -55,7 +69,7 @@ export default createBottomTabNavigator(
       }
     },
     Search: {
-      screen: stackFactory(Search, { title: "Search" }),
+      screen: stackFactory(Search, { headerBackTitle: null }),
       navigationOptions: {
         tabBarIcon: (
           <NavIcon name={Platform.OS === "ios" ? "ios-search" : "md-search"} />
@@ -107,7 +121,7 @@ export default createBottomTabNavigator(
     }
   },
   {
-    initialRouteName: "Search",
+    initialRouteName: "Profile",
     tabBarOptions: {
       showLabel: false,
       style: { backgroundColor: "#FAFAFA" }

@@ -1,16 +1,34 @@
 import React from "react";
 import styled from "styled-components";
+import { useQuery } from "react-apollo-hooks";
+import { gql } from "apollo-boost";
+import { POST_FRAGMENT } from "../fragments";
+import Loader from "../components/Loader";
+import Post from "../components/Post";
+import { ScrollView } from "react-native-gesture-handler";
 
-const View = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+const POST_DETAIL = gql`
+  query seeFullPost($id: String!) {
+    seeFullPost(id: $id) {
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
 `;
 
-const Text = styled.Text``;
-
-export default ({ navigation }) => (
-  <View>
-    <Text>Photo {navigation.getParam("id")} Detail!</Text>
-  </View>
-);
+export default ({ navigation }) => {
+  const { loading, data } = useQuery(POST_DETAIL, {
+    variables: { id: navigation.getParam("id") },
+    fetchPolicy: "network-only"
+  });
+  console.log(data, loading);
+  return (
+    <ScrollView>
+      {loading ? (
+        <Loader />
+      ) : (
+        data && data.seeFullPost && <Post {...data.seeFullPost} />
+      )}
+    </ScrollView>
+  );
+};
