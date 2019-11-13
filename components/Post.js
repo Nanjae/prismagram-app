@@ -151,7 +151,7 @@ const Post = ({
         </Touchable>
       </IconsContainer>
       <InfoContainer>
-        {likeCountProp === 0 ? null : (
+        {likeCount === 0 ? null : (
           <Touchable>
             <Bold>좋아요 {likeCount}개</Bold>
           </Touchable>
