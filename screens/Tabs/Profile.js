@@ -24,7 +24,7 @@ const View = styled.View`
 
 const Text = styled.Text``;
 
-export default () => {
+const Profile = () => {
   const { loading, data } = useQuery(ME, { fetchPolicy: "network-only" });
   console.log(data, loading);
   return (
@@ -33,3 +33,5 @@ export default () => {
     </ScrollView>
   );
 };
+
+export default Profile;

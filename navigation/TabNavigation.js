@@ -6,13 +6,14 @@ import Home from "../screens/Tabs/Home";
 import Notifications from "../screens/Tabs/Notifications";
 import Search from "../screens/Tabs/Search";
 import Profile from "../screens/Tabs/Profile";
-import Detail from "../screens/Detail";
+import PostDetail from "../screens/PostDetail";
 import { createStackNavigator } from "react-navigation-stack";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import styled from "styled-components";
 import { stackStyles } from "../components/config";
 import styles from "../styles";
+import UserDetail from "../screens/UserDetail";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -23,17 +24,27 @@ const stackFactory = (initialRoute, customConfig) =>
           ...customConfig
         }
       },
-      Detail: {
-        screen: Detail,
+      PostDetail: {
+        screen: PostDetail,
         navigationOptions: {
-          headerTintColor: styles.blackColor,
           title: "탐색 탭",
           headerTitleStyle: { marginLeft: 0 }
         }
+      },
+      UserDetail: {
+        screen: UserDetail,
+        navigationOptions: ({ navigation }) => ({
+          title: navigation.getParam("username"),
+          headerTitleStyle: {
+            marginLeft: 0
+          }
+        })
       }
     },
     {
       defaultNavigationOptions: {
+        headerBackTitle: null,
+        headerTintColor: styles.blackColor,
         headerStyle: { ...stackStyles }
       }
     }
@@ -69,7 +80,7 @@ export default createBottomTabNavigator(
       }
     },
     Search: {
-      screen: stackFactory(Search, { headerBackTitle: null }),
+      screen: stackFactory(Search),
       navigationOptions: {
         tabBarIcon: (
           <NavIcon name={Platform.OS === "ios" ? "ios-search" : "md-search"} />
