@@ -6,6 +6,7 @@ import Home from "../screens/Tabs/Home";
 import Notifications from "../screens/Tabs/Notifications";
 import Search from "../screens/Tabs/Search";
 import Profile from "../screens/Tabs/Profile";
+import Detail from "../screens/Detail";
 import { createStackNavigator } from "react-navigation-stack";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
@@ -20,7 +21,8 @@ const stackFactory = (initialRoute, customConfig) =>
         ...customConfig,
         headerStyle: { ...stackStyles }
       }
-    }
+    },
+    Detail
   });
 
 const Container = styled.View`

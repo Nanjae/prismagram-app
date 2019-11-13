@@ -37,12 +37,6 @@ const FEED_QUERY = gql`
   }
 `;
 
-const View = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
 export default () => {
   const [refreshing, setRefreshing] = useState(false);
   const { loading, data, refetch } = useQuery(FEED_QUERY);
