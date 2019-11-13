@@ -1,5 +1,20 @@
 import React from "react";
+import { ScrollView } from "react-native";
+import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
+import { USER_FRAGMENT } from "../../fragments";
+import Loader from "../../components/Loader";
+import UserProfile from "../../components/UserProfile";
+
+const ME = gql`
+  {
+    me {
+      ...UserParts
+    }
+  }
+  ${USER_FRAGMENT}
+`;
 
 const View = styled.View`
   flex: 1;
@@ -9,8 +24,12 @@ const View = styled.View`
 
 const Text = styled.Text``;
 
-export default () => (
-  <View>
-    <Text>Profile</Text>
-  </View>
-);
+export default () => {
+  const { loading, data } = useQuery(ME, { fetchPolicy: "network-only" });
+  console.log(data, loading);
+  return (
+    <ScrollView>
+      {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} />}
+    </ScrollView>
+  );
+};

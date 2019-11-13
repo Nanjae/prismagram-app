@@ -27,7 +27,7 @@ const stackFactory = (initialRoute, customConfig) =>
         screen: Detail,
         navigationOptions: {
           headerTintColor: styles.blackColor,
-          title: "Post",
+          title: "탐색 탭",
           headerTitleStyle: { marginLeft: 0 }
         }
       }
@@ -112,7 +112,7 @@ export default createBottomTabNavigator(
       }
     },
     Profile: {
-      screen: stackFactory(Profile, { title: "Profile" }),
+      screen: stackFactory(Profile, { title: "프로필" }),
       navigationOptions: {
         tabBarIcon: (
           <NavIcon name={Platform.OS === "ios" ? "ios-person" : "md-person"} />

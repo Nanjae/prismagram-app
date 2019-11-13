@@ -28,3 +28,22 @@ export const POST_FRAGMENT = gql`
     updatedAt
   }
 `;
+
+export const USER_FRAGMENT = gql`
+  fragment UserParts on User {
+    id
+    avatar
+    username
+    fullName
+    isFollowing
+    isSelf
+    bio
+    followingCount
+    followerCount
+    postsCount
+    posts {
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`;
