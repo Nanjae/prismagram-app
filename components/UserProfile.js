@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View } from "react-native";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -6,6 +6,8 @@ import styles from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Platform } from "@unimodules/core";
 import constants from "../constants";
+import SquarePost from "./SquarePost";
+import Post from "./Post";
 
 const ProfileHeader = styled.View`
   padding: 10px 20px;
@@ -68,8 +70,12 @@ const UserProfile = ({
   followerCount,
   followingCount,
   fullName,
-  bio
+  bio,
+  posts
 }) => {
+  const [isGrid, setIsGrid] = useState(true);
+  const pressGrid = () => setIsGrid(true);
+  const pressList = () => setIsGrid(false);
   return (
     <View>
       <ProfileHeader>
@@ -105,16 +111,16 @@ const UserProfile = ({
         <Bio>{bio}</Bio>
       </ProfileMeta>
       <ButtonContainer>
-        <Touchable>
-          <Button>
+        <Touchable onPress={pressGrid}>
+          <Button style={isGrid ? { opacity: 1 } : { opacity: 0.2 }}>
             <Ionicons
               size={28}
               name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
             />
           </Button>
         </Touchable>
-        <Touchable>
-          <Button>
+        <Touchable onPress={pressList}>
+          <Button style={isGrid ? { opacity: 0.2 } : { opacity: 1 }}>
             <Ionicons
               size={28}
               name={Platform.OS === "ios" ? "ios-list" : "md-list"}
@@ -122,6 +128,14 @@ const UserProfile = ({
           </Button>
         </Touchable>
       </ButtonContainer>
+      {posts &&
+        posts.map(post =>
+          isGrid ? (
+            <SquarePost key={post.id} {...post} />
+          ) : (
+            <Post key={post.id} {...post} />
+          )
+        )}
     </View>
   );
 };
