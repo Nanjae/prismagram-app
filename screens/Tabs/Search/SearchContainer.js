@@ -16,7 +16,8 @@ export default class extends React.Component {
     super(props);
     const { navigation } = props;
     this.state = {
-      term: ""
+      term: "",
+      shouldFetch: false
     };
     navigation.setParams({
       term: this.state.term,
@@ -26,13 +27,14 @@ export default class extends React.Component {
   }
   onChange = text => {
     const { navigation } = this.props;
-    this.setState({ term: text });
+    this.setState({ term: text, shouldFetch: false });
     navigation.setParams({ term: text });
   };
   onSubmit = () => {
-    console.log("Submit");
+    this.setState({ shouldFetch: true });
   };
   render() {
-    return <SearchPresenter />;
+    const { term, shouldFetch } = this.state;
+    return <SearchPresenter term={term} shouldFetch={shouldFetch} />;
   }
 }
