@@ -20,7 +20,7 @@ const Button = styled.View`
 
 export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
-  const [canUploadPhoto, setCanUploadPhoto] = useState(true);
+  const [canSelectPhoto, setCanSelectPhoto] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
   const [selected, setSelected] = useState();
   const [allPhotos, setAllPhotos] = useState();
@@ -54,17 +54,17 @@ export default ({ navigation }) => {
     }
   };
   const handleSelected = () => {
-    if (!canUploadPhoto) {
+    if (!canSelectPhoto) {
       return;
     }
     try {
-      setCanUploadPhoto(false);
+      setCanSelectPhoto(false);
       navigation.navigate("Upload", { photo: selected });
     } catch (e) {
       console.log(e);
-      setCanUploadPhoto(true);
+      setCanSelectPhoto(true);
     } finally {
-      setCanUploadPhoto(true);
+      setCanSelectPhoto(true);
     }
   };
   useEffect(() => {
