@@ -7,15 +7,30 @@ import { stackStyles } from "../components/config";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    SelectPhoto,
-    TakePhoto
+    Select: {
+      screen: SelectPhoto,
+      navigationOptions: {
+        tabBarLabel: "갤러리"
+      }
+    },
+    Take: { screen: TakePhoto, navigationOptions: { tabBarLabel: "사진" } }
   },
-  { tabBarPosition: "bottom" }
+  {
+    tabBarPosition: "bottom",
+    tabBarOptions: {
+      style: {
+        backgroundColor: "white"
+      },
+      activeTintColor: "black",
+      inactiveTintColor: "grey",
+      indicatorStyle: { backgroundColor: "black" }
+    }
+  }
 );
 
 export default createStackNavigator(
   {
-    PhotoTabs,
+    Tabs: { screen: PhotoTabs, navigationOptions: { header: null } },
     UploadPhoto
   },
   { defaultNavigationOptions: { headerStyle: { ...stackStyles } } }
