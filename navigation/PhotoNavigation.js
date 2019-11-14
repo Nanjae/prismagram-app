@@ -21,8 +21,10 @@ const PhotoTabs = createMaterialTopTabNavigator(
       style: {
         backgroundColor: "white"
       },
+      tabStyle: { height: 40 },
       activeTintColor: "black",
       inactiveTintColor: "grey",
+      labelStyle: { marginBottom: 10 },
       indicatorStyle: { backgroundColor: "black" }
     }
   }
@@ -30,7 +32,14 @@ const PhotoTabs = createMaterialTopTabNavigator(
 
 export default createStackNavigator(
   {
-    Tabs: { screen: PhotoTabs, navigationOptions: { header: null } },
+    Tabs: {
+      screen: PhotoTabs,
+      navigationOptions: {
+        title: "사진 선택",
+        headerStyle: { height: 20 },
+        headerTitleStyle: { marginBottom: 15 }
+      }
+    },
     UploadPhoto
   },
   { defaultNavigationOptions: { headerStyle: { ...stackStyles } } }
