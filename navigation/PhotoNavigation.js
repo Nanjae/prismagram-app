@@ -7,13 +7,13 @@ import { stackStyles } from "../components/config";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    Take: { screen: TakePhoto, navigationOptions: { tabBarLabel: "사진" } },
     Select: {
       screen: SelectPhoto,
       navigationOptions: {
         tabBarLabel: "갤러리"
       }
-    }
+    },
+    Take: { screen: TakePhoto, navigationOptions: { tabBarLabel: "사진" } }
   },
   {
     tabBarPosition: "bottom",
@@ -40,7 +40,13 @@ export default createStackNavigator(
         headerTitleStyle: { marginBottom: 20 }
       }
     },
-    UploadPhoto
+    Upload: {
+      screen: UploadPhoto,
+      navigationOptions: {
+        title: "새 게시물",
+        headerTitleStyle: { marginLeft: 0 }
+      }
+    }
   },
   { defaultNavigationOptions: { headerStyle: { ...stackStyles } } }
 );

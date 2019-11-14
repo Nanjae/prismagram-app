@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, StatusBar } from "react-native";
+import { Image, ScrollView, StatusBar, Platform } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import styled from "styled-components";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 
 const View = styled.View`
   flex: 1;
 `;
 
-export default () => {
+const Button = styled.View`
+  position: absolute;
+  right: 10px;
+  top: 5px;
+`;
+
+export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
+  const [canUploadPhoto, setCanUploadPhoto] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
   const [selected, setSelected] = useState();
   const [allPhotos, setAllPhotos] = useState();
@@ -45,6 +53,20 @@ export default () => {
       setHasPermission(false);
     }
   };
+  const handleSelected = () => {
+    if (!canUploadPhoto) {
+      return;
+    }
+    try {
+      setCanUploadPhoto(false);
+      navigation.navigate("Upload", { photo: selected });
+    } catch (e) {
+      console.log(e);
+      setCanUploadPhoto(true);
+    } finally {
+      setCanUploadPhoto(true);
+    }
+  };
   useEffect(() => {
     askPermission();
   }, []);
@@ -64,6 +86,19 @@ export default () => {
                 }}
                 source={{ uri: selected.uri }}
               />
+              <Button>
+                <TouchableOpacity onPress={handleSelected}>
+                  <Ionicons
+                    color={"white"}
+                    size={32}
+                    name={
+                      Platform.OS === "ios"
+                        ? "ios-arrow-forward"
+                        : "md-arrow-forward"
+                    }
+                  />
+                </TouchableOpacity>
+              </Button>
               <ScrollView
                 contentContainerStyle={{
                   flexDirection: "row",
