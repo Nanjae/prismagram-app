@@ -30,7 +30,6 @@ export default () => {
       setRefreshing(false);
     }
   };
-  console.log(data);
   return (
     <ScrollView
       refreshControl={

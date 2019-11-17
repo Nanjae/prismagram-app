@@ -6,7 +6,6 @@ import styles from "../../styles";
 import useInput from "../../hooks/useInput";
 import constants from "../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import FormData from "form-data";
 
 const View = styled.View``;
 
@@ -49,7 +48,7 @@ export default ({ navigation }) => {
   const [canUploadPhoto, setCanUploadPhoto] = useState(true);
   const [fileUrl, setFileUrl] = useState("");
   const photo = navigation.getParam("photo");
-  const captionInput = useInput("asfd");
+  const captionInput = useInput("");
   const locationInput = useInput("");
   const handleSubmit = async () => {
     if (!canUploadPhoto) {
@@ -59,26 +58,24 @@ export default ({ navigation }) => {
     if (captionInput.value === "") {
       Alert.alert("문구를 입력해주세요.");
     }
-    const formData = new FormData();
+    let formData = new FormData();
     const name = photo.filename;
-    const [, type] = name.split(".");
     formData.append("file", {
       name,
-      type: type.toLowerCase(),
+      type: "image/jpeg",
       uri: photo.uri
     });
-    console.log(formData);
     try {
-      await axios.post(
-        "http://b2cbf171.ngrok.io/api/upload",
-        {
-          data: formData
-        },
-        { headers: { "Content-type": "multipart/form=data" } }
+      const {
+        data: { path }
+      } = await axios.post(
+        "http://219.240.247.13:4000/api/upload",
+        formData,
+        null
       );
-      // console.log(data);
+      setFileUrl(path);
     } catch (e) {
-      console.log(e);
+      Alert.alert("업로드 할 수 없습니다.");
       setCanUploadPhoto(true);
     } finally {
       setCanUploadPhoto(true);

@@ -113,9 +113,11 @@ const Post = ({
           >
             <Bold>{user.username}</Bold>
           </Touchable>
-          <Touchable>
-            <Location>{location}</Location>
-          </Touchable>
+          {location === null ? null : (
+            <Touchable>
+              <Location>{location}</Location>
+            </Touchable>
+          )}
         </HeaderUserContainer>
       </Header>
       <Swiper
