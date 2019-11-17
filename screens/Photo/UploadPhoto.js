@@ -57,6 +57,8 @@ export default ({ navigation }) => {
     setCanUploadPhoto(false);
     if (captionInput.value === "") {
       Alert.alert("문구를 입력해주세요.");
+      setCanUploadPhoto(true);
+      return;
     }
     let formData = new FormData();
     const name = photo.filename;
@@ -67,13 +69,13 @@ export default ({ navigation }) => {
     });
     try {
       const {
-        data: { path }
+        data: { location }
       } = await axios.post(
         "http://219.240.247.13:4000/api/upload",
         formData,
         null
       );
-      setFileUrl(path);
+      setFileUrl(location);
     } catch (e) {
       Alert.alert("업로드 할 수 없습니다.");
       setCanUploadPhoto(true);
