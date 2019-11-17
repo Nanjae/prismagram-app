@@ -28,13 +28,10 @@ const SEARCH = gql`
   }
 `;
 
-const View = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+const PhotoContainer = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
-
-const Text = styled.Text``;
 
 const SearchPresenter = ({ term, shouldFetch }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -49,27 +46,27 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     try {
       setRefreshing(true);
       await refetch({ variables: { term } });
-      console.log(data, loading);
     } catch (e) {
       console.log(e);
     } finally {
       setRefreshing(false);
     }
   };
-  console.log(data, loading);
   return (
     <ScrollView
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      {loading ? (
-        <Loader />
-      ) : (
-        data &&
-        data.searchPost &&
-        data.searchPost.map(post => <SquarePost key={post.id} {...post} />)
-      )}
+      <PhotoContainer>
+        {loading ? (
+          <Loader />
+        ) : (
+          data &&
+          data.searchPost &&
+          data.searchPost.map(post => <SquarePost key={post.id} {...post} />)
+        )}
+      </PhotoContainer>
     </ScrollView>
   );
 };

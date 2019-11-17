@@ -2,10 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Image, StatusBar, Alert } from "react-native";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
 import styles from "../../styles";
 import useInput from "../../hooks/useInput";
 import constants from "../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useMutation } from "react-apollo-hooks";
+import { FEED_QUERY } from "../Tabs/Home";
+
+const UPLOAD_POST = gql`
+  mutation uploadPost(
+    $caption: String!
+    $files: [String!]!
+    $location: String
+  ) {
+    uploadPost(caption: $caption, files: $files, location: $location) {
+      id
+      caption
+      location
+    }
+  }
+`;
 
 const View = styled.View``;
 
@@ -46,10 +63,12 @@ const Text = styled.Text`
 
 export default ({ navigation }) => {
   const [canUploadPhoto, setCanUploadPhoto] = useState(true);
-  const [fileUrl, setFileUrl] = useState("");
-  const photo = navigation.getParam("photo");
   const captionInput = useInput("");
   const locationInput = useInput("");
+  const [uploadPostMutation] = useMutation(UPLOAD_POST, {
+    refetchQueries: () => [{ query: FEED_QUERY }]
+  });
+  const photo = navigation.getParam("photo");
   const handleSubmit = async () => {
     if (!canUploadPhoto) {
       return;
@@ -60,7 +79,7 @@ export default ({ navigation }) => {
       setCanUploadPhoto(true);
       return;
     }
-    let formData = new FormData();
+    const formData = new FormData();
     const name = photo.filename;
     formData.append("file", {
       name,
@@ -75,8 +94,21 @@ export default ({ navigation }) => {
         formData,
         null
       );
-      setFileUrl(location);
+      const {
+        data: { uploadPost }
+      } = await uploadPostMutation({
+        variables: {
+          caption: captionInput.value,
+          location: locationInput.value,
+          files: [location]
+        }
+      });
+      if (uploadPost.id) {
+        navigation.navigate("TabNavigation");
+      }
     } catch (e) {
+      console.log(e);
+      console.log(e.response);
       Alert.alert("업로드 할 수 없습니다.");
       setCanUploadPhoto(true);
     } finally {

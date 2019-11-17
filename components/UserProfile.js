@@ -64,6 +64,11 @@ const Button = styled.View`
   padding: 5px 0px;
 `;
 
+const PostContainer = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
 const UserProfile = ({
   avatar,
   postsCount,
@@ -128,14 +133,16 @@ const UserProfile = ({
           </Button>
         </Touchable>
       </ButtonContainer>
-      {posts &&
-        posts.map(post =>
-          isGrid ? (
-            <SquarePost key={post.id} {...post} />
-          ) : (
-            <Post key={post.id} {...post} />
-          )
-        )}
+      <PostContainer>
+        {posts &&
+          posts.map(post =>
+            isGrid ? (
+              <SquarePost key={post.id} {...post} />
+            ) : (
+              <Post key={post.id} {...post} />
+            )
+          )}
+      </PostContainer>
     </View>
   );
 };

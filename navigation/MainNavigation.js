@@ -6,8 +6,8 @@ import MessageNavigation from "./MessageNavigation";
 
 const MainNavigation = createStackNavigator(
   {
-    PhotoNavigation,
     TabNavigation,
+    PhotoNavigation,
     MessageNavigation
   },
   { headerMode: "none" }

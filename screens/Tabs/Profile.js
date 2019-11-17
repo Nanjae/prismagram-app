@@ -26,7 +26,6 @@ const Text = styled.Text``;
 
 const Profile = () => {
   const { loading, data } = useQuery(ME, { fetchPolicy: "network-only" });
-  console.log(data, loading);
   return (
     <ScrollView>
       {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} />}

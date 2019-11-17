@@ -21,7 +21,6 @@ export default ({ navigation }) => {
     variables: { username: navigation.getParam("username") },
     fetchPolicy: "network-only"
   });
-  console.log(data, loading);
   return (
     <ScrollView>
       {loading ? (

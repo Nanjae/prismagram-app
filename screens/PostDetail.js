@@ -21,7 +21,6 @@ export default ({ navigation }) => {
     variables: { id: navigation.getParam("id") },
     fetchPolicy: "network-only"
   });
-  console.log(data, loading);
   return (
     <ScrollView>
       {loading ? (
