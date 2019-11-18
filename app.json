@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Prismagram iOS & Android App",
+    "githubUrl": "https://github.com/Nanjae/prismagram-app"
   }
 }

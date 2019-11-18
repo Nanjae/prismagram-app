@@ -113,7 +113,7 @@ const Post = ({
           >
             <Bold>{user.username}</Bold>
           </Touchable>
-          {location === null ? null : (
+          {location === null || location === "" ? null : (
             <Touchable>
               <Location>{location}</Location>
             </Touchable>

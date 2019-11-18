@@ -90,7 +90,7 @@ export default ({ navigation }) => {
       const {
         data: { location }
       } = await axios.post(
-        "http://219.240.247.13:4000/api/upload",
+        "https://prismagram-insta-clone-backend.herokuapp.com/api/upload",
         formData,
         null
       );
